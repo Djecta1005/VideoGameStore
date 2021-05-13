@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class QueryProcessor {
-    private HashMap<String, Customer> Customers = new HashMap<String, Customer>();
-    private HashMap<String, StockItem> StockItems = new HashMap<String, StockItem>();
-    private ArrayList<RentedItem> RentedItems = new ArrayList<RentedItem>();
-
+    private HashMap<String, Customer> Customers;
+    private HashMap<String, StockItem> StockItems;
+    private ArrayList<RentedItem> RentedItems;
     public QueryProcessor(HashMap<String, Customer> customers, HashMap<String, StockItem> stockItems, ArrayList<RentedItem> rentedItems) {
+        Customers = new HashMap<String, Customer>();
+        StockItems = new HashMap<String, StockItem>();
+        RentedItems = new ArrayList<RentedItem>();
         Customers = customers;
         StockItems = stockItems;
         RentedItems = rentedItems;
@@ -42,17 +44,17 @@ public class QueryProcessor {
     {
         return  StockItems.containsKey(title);
     }
-    public ArrayList<Film> NdByActor(String Actor)
+    public ArrayList<String> NdByActor(String Actor)
     {
         Iterator<Map.Entry<String, StockItem>> itr = StockItems.entrySet().iterator();
-        ArrayList<Film> films = new ArrayList<Film>();
+        ArrayList<String> films = new ArrayList<String>();
         while(itr.hasNext())
         {
 
             Map.Entry<String, StockItem> entry = itr.next();
             if((entry.getValue().getClass().getSimpleName().compareTo("Film")==0) &&(((Film)entry.getValue()).getActor().compareTo(Actor)==0))
             {
-                films.add((Film) entry.getValue());
+                films.add(((Film) entry.getValue()).getTitle());
             }
         }
         return films;
@@ -72,6 +74,7 @@ public class QueryProcessor {
             if(RentedItems.get(i).getDueDate().isBefore(LocalDate.now()))
             {
                 Items.add(RentedItems.get(i).getItemID());
+                System.out.println(RentedItems.get(i).getItemID().getTitle());
             }
 
         return Items;
